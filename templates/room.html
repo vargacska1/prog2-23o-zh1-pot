@@ -1,0 +1,52 @@
+{% extends 'base.html' %} {% block content %}
+<h2>
+  Reservations for {{ room.name }}
+</h2>
+
+
+<!-- reservations[0-4][0-23] == esemény neve, vagy üres string, ha szabad -->
+<table>
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Monday</th>
+      <th>Tuesday</th>
+      <th>Wednesday</th>
+      <th>Thursday</th>
+      <th>Friday</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for hour in range(24) %}
+    <tr>
+      <td>{{ hour }}:00-{{ hour+1 }}:00</td>
+      {% for day in range(5) %}
+      {% if reservations[day][hour] == "" %}
+      <td style="background-color: green"></td>
+      {%else %}
+      <td style="background-color: red">
+        {{ reservations[day][hour] }}
+      </td>
+      {% endif %}
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>Make reservation</h3>
+<form action="/reserve/{{room.name}}" method="POST">
+  <input required type="text" name="event_name" placeholder="Event name" />
+  <select name="day" required>
+    <option value="0">Monday</option>
+    <option value="1">Tuesday</option>
+    <option value="2">Wednesday</option>
+    <option value="3">Thursday</option>
+    <option value="4">Friday</option>
+  </select>
+  <input required type="number" min="0" max="23" step="1" name="start_time" placeholder="start h" />
+  <input required type="number" min="1" max="24" step="1" name="end_time" placeholder="end h" />
+  <input type="submit" value="Reserve" />
+</form>
+
+{% endblock %}
