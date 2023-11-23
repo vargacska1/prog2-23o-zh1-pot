@@ -38,3 +38,5 @@ A megadott template-eket ki kell egészíteni, vagy készíthető saját templat
 A megadott `room.html` egy 5x24 elemű `reservations` mátrixban várja, hogy az egyes napok egyes óráiban milyen esemény van az adott teremben.
 Ha semmi, akkor az elem egy üres string.
 De a template tetszőlegesen módosítható.
+
+![](screenshot.png)
