@@ -10,7 +10,7 @@ CREATE TABLE rooms(
 CREATE TABLE reservations(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     room_name TEXT NOT NULL,
-    reserve_day INTEGER NOT NULL,
+    day INTEGER NOT NULL,
     start_time INTEGER NOT NULL,
     end_time INTEGER NOT NULL,
     event_name TEXT DEFAULT NULL,

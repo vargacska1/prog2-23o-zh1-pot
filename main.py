@@ -40,12 +40,12 @@ def rooms():
 def reserve(room_name):
     db = get_db()
     if request.method == "POST":
-        event_name = request.form.get("event_name")
         day = request.form.get("day")
-        start_time = request.form.get("start_time")
-        end_time = request.form.get("end_time")
+        event_name = request.form.get("event_name")
+        start_time = int(request.form.get("start_time"))
+        end_time = int(request.form.get("end_time"))
         db.execute(
-            "INSERT INTO reservations (room_name, reserve_day, event_name, start_time, end_time) VALUES (?,?,?,?,?)",
+            "INSERT INTO reservations (room_name, day, event_name, start_time, end_time) VALUES (?,?,?,?,?)",
             (room_name, day, event_name, start_time, end_time),
         )
         db.commit()
@@ -53,17 +53,19 @@ def reserve(room_name):
 
     if request.method == "GET":
         reservations = [["" for _ in range(24)] for _ in range(5)]
-        room_reservations = db.execute("SELECT * FROM reservations").fetchall()
+        room_reservations = db.execute(
+            "SELECT * FROM reservations WHERE room_name=?", (room_name,)
+        ).fetchall()
 
         for reservation in room_reservations:
-            day = reservation["reserve_day"]
+            day = reservation["day"]
             start_time = reservation["start_time"]
             end_time = reservation["end_time"]
             event_name = reservation["event_name"]
             for hour in range(start_time, end_time):
                 reservations[day][hour] = event_name
 
-        room = db.execute("SELECT * FROM rooms WHERE name=?", (room_name,))
+        room = db.execute("SELECT * FROM rooms WHERE name=?", (room_name,)).fetchone()
         return render_template("room.html", room=room, reservations=reservations)
 
 
