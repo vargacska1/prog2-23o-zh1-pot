@@ -2,7 +2,9 @@
 {% block content %}
 
 <h2>Rooms</h2>
-<!-- TODO: termek listázása -->
+ {%for room in rooms%}
+    <a href="{{url_for('reserve', room_name=room.name)}}">{{room.name}}</a><br/>
+ {%endfor%}
 
 <h3>Create room</h3>
 <form action="/rooms" method="POST">

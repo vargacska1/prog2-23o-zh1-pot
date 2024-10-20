@@ -10,10 +10,10 @@ A történt módosítások kerüljenek mentésre adatbázisba vagy fájlba, és 
 ### Elvárt funkciók
 
 - Termek kezelése
-  - Listázás
-    - A termek aloldalaira mutató linkekkel
-  - Hozzáadás
-    - Terem nevének megadása (egyedi kell legyen)
+  - X Listázás
+    - X A termek aloldalaira mutató linkekkel
+  - X Hozzáadás
+    - X Terem nevének megadása (egyedi kell legyen)
   - Termek egész hetes kihasználtságának összehasonlítása oszlopdiagramon
 - Terem aloldalán foglalások kezelése
   - Terem foglaltságának megjelenítése
