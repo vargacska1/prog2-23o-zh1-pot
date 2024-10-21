@@ -1,6 +1,10 @@
 from flask import Flask, abort, render_template, request, redirect, session, url_for, g
 import sqlite3
+import matplotlib
+import matplotlib.pyplot as plt
+import os
 
+matplotlib.use("Agg")
 app = Flask(__name__)
 DB = "reservations.sqlite"
 
@@ -18,6 +22,16 @@ def close_db(e=None):
         db.close()
 
 
+def statistics():
+    db = get_db()
+    rooms = db.execute("SELECT name, score FROM rooms").fetchall()
+    plt.bar([room["name"] for room in rooms], [room["score"] for room in rooms])
+    if not os.path.exists("static"):
+        os.mkdir("static")
+    plt.savefig("static/barplot.png")
+    plt.close()
+
+
 @app.route("/")
 def index():
     return render_template("base.html")
@@ -33,6 +47,7 @@ def rooms():
         return redirect(url_for("rooms"))
     if request.method == "GET":
         rooms = db.execute("SELECT * FROM rooms").fetchall()
+        statistics()
         return render_template("rooms.html", rooms=rooms)
 
 
@@ -44,9 +59,26 @@ def reserve(room_name):
         event_name = request.form.get("event_name")
         start_time = int(request.form.get("start_time"))
         end_time = int(request.form.get("end_time"))
+        if end_time <= start_time:
+            abort(400, "Előbb van vége a meetingnek, mint ahogy elkezdődött? 🤨")
+        reserved_dates = db.execute(
+            "SELECT start_time, end_time FROM reservations WHERE room_name = (?) AND day=(?)",
+            (room_name, day),
+        ).fetchall()
+        for date in reserved_dates:  # Összes foglalt időpont
+            for hour in range(start_time, end_time):
+                if hour in range(date["start_time"], date["end_time"]) or hour in range(
+                    date["start_time"], date["end_time"]
+                ):
+                    abort(400, "Foglalt időpont")
         db.execute(
             "INSERT INTO reservations (room_name, day, event_name, start_time, end_time) VALUES (?,?,?,?,?)",
             (room_name, day, event_name, start_time, end_time),
+        )
+        reservation_hours = end_time - start_time
+        db.execute(
+            "UPDATE rooms SET score=score+(?) WHERE name=(?)",
+            (reservation_hours, room_name),
         )
         db.commit()
         return redirect(url_for("reserve", room_name=room_name))
@@ -67,6 +99,15 @@ def reserve(room_name):
 
         room = db.execute("SELECT * FROM rooms WHERE name=?", (room_name,)).fetchone()
         return render_template("room.html", room=room, reservations=reservations)
+
+
+@app.post("/rooms/clear")
+def clear():
+    db = get_db()
+    db.execute("DELETE FROM reservations")
+    db.execute("UPDATE rooms SET score=0")
+    db.commit()
+    return redirect(url_for("rooms"))
 
 
 if __name__ == "__main__":

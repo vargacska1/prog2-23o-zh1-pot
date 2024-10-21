@@ -16,22 +16,22 @@ A történt módosítások kerüljenek mentésre adatbázisba vagy fájlba, és 
     - X Terem nevének megadása (egyedi kell legyen)
   - Termek egész hetes kihasználtságának összehasonlítása oszlopdiagramon
 - Terem aloldalán foglalások kezelése
-  - Terem foglaltságának megjelenítése
-    - Táblázat 5 oszloppal (hétfő-péntek), soronként 1 óra
-      - Zöld: elérhető
-      - Piros: foglalt
-        - Esemény megnevezése jelenjen meg
-  - Terem foglalása
-    - Időtartam megadása
-      - Nap (hétfő, kedd, ...)
-      - Kezdési idő (egész óra: 0, 1, ..., 23)
-      - Befejezési idő (egész óra: 1, 2, ..., 24)
-        - Ha kezdés >= befejezés, akkor hibaüzenet
-    - Esemény nevének megadása (nem kell, hogy egyedi legyen)
-    - Ellenőrzés
-      - Ha a terem az időtartam bármely részében már foglalt, hibaüzenet
-      - Különben a teremfoglalás mentése
-  - Összes foglalás törlése (új hét indítása)
+- X Terem foglaltságának megjelenítése
+  - Táblázat 5 oszloppal (hétfő-péntek), soronként 1 óra
+    - Zöld: elérhető
+    - Piros: foglalt
+      - Esemény megnevezése jelenjen meg
+- X Terem foglalása
+  - X Időtartam megadása
+    - X Nap (hétfő, kedd, ...)
+    - X Kezdési idő (egész óra: 0, 1, ..., 23)
+    - X Befejezési idő (egész óra: 1, 2, ..., 24)
+      - X Ha kezdés >= befejezés, akkor hibaüzenet
+  - X Esemény nevének megadása (nem kell, hogy egyedi legyen)
+  - Ellenőrzés
+    - X Ha a terem az időtartam bármely részében már foglalt, hibaüzenet
+    - X Különben a teremfoglalás mentése
+- Összes foglalás törlése (új hét indítása)
 
 A megadott template-eket ki kell egészíteni, vagy készíthető saját template is.
 
